@@ -1,0 +1,103 @@
+import {
+  Text,
+  SafeAreaView,
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  Button,
+} from 'react-native';
+import React, { useState } from 'react';
+import * as ImagePicker from 'expo-image-picker';
+
+/*from flask import Flask,request,jsonify
+from flask_cors import CORS
+import some_ml_model_library
+
+
+app = Flask(__name__)
+CORS(app) //to allow CORS for all routes
+
+load training model
+model=*/
+export default function App() {
+  const [prediction, setPrediction] = useState('');
+
+  const pickImage = async () => {
+    let result = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (result.granted === false) {
+      Alert.alert('Access not granted');
+      return;
+    }
+    let pickedImage = await ImagePicker.launchImageLibraryAsync();
+    if (!pickedImage.canceled) {
+      setImageUri(pickedImage.uri);
+    }
+  };
+
+  const uploadImage = async () => {
+    if (!imageUri) {
+      return;
+    }
+    setLoading(true);
+    const form = new FormData();
+    form.append('file', {
+      uri: imageUri,
+      type: image / png,
+      name: 'lungpic.png',
+    });
+    try {
+      const response = await axios.post(
+        'http://127.0.0.1:5000/predict',
+        form,
+        {
+          header: {
+            contentType: '/formData',
+          },
+        }
+      );
+      setPrediction(response.data.prediction);
+    } catch (errorMessage) {
+      console.log('error');
+      Alert.alert('error');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <View style={styles.container}>
+      <Button title="pick" style={styles.pickButton} onPress={pickImage} />
+      <Button title="upload" onPress={uploadImage} />
+      <Text>prediction: {prediction}</Text>
+    </View>
+  );
+}
+
+/*def predict(){
+  file = request.files['file']
+  
+
+  return jsonify({'prediction': prediction})
+
+}
+
+if __name__ == '__main__'{
+  app.run(host = '0.0.0',port = 5000)
+}*/
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    backgroundColor: '#ecf0f1',
+    padding: 8,
+  },
+  pickButton: {
+    marginLeft: 100,
+    marginTop: 0,
+    height: 45,
+    width: 110,
+    borderRadius: 8,
+    backgroundColor: 'rgb(255,0, 0)',
+  },
+});
